@@ -6,10 +6,12 @@ on:
     branches:
       - main
 jobs:
-
   deploy_source:
     name: deploy lambda from source
     runs-on: ubuntu-latest
+    environment:
+      name: DEV
+      url: "https://r0k77nztt7.execute-api.us-east-1.amazonaws.com/dev/users"
     steps:
       - name: checkout source code
         uses: actions/checkout@v1
