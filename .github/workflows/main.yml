@@ -15,6 +15,22 @@ jobs:
     steps:
       - name: checkout source code
         uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
+        with:
+          node-version: "10.x"
+      - name: Install Serverless Framework
+        run: npm install -g serverless
+      - name: Serverless AWS authentication
+        run: sls config credentials --provider aws --key ${{ secrets.AWS_KEY }} --secret ${{ secrets.AWS_SECRET }}
+      - name: Create env file
+        run: | # cp sample.env.yml env.yml
+          cat > env.yml << EOF
+          ${{ secrets.ENV }}
+          EOF
+      - name: Install NPM dependencies
+        run: npm install
+      - name: Deploy Lambda functions
+        run: sls deploy --stage dev
       - name: default deploy
         uses: appleboy/lambda-action@master
         with:
